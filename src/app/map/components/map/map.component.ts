@@ -9,8 +9,9 @@ import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
 import { WaterMeter } from '../../../models/water-meter.model';
-import { HydroPoint } from "../../../models/hydro-point.model";
-import MapsEventListener = google.maps.MapsEventListener;
+import { HydroPoint } from '../../../models/hydro-point.model';
+import { Router } from '@angular/router';
+import { StateService } from '../../../services/state.service';
 
 @Component({
   selector: 'app-map',
@@ -33,7 +34,7 @@ export class MapComponent implements AfterViewInit {
   activeZone: Zone | undefined;
   waterMeters: WaterMeter[] = [];
 
-  @ViewChild('mapContainer', {static: false}) gmap?: ElementRef;
+  @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
   map?: google.maps.Map | null;
   lat = 50.041187;
   lng = 21.999121;
@@ -45,8 +46,11 @@ export class MapComponent implements AfterViewInit {
     zoom: 12,
   };
 
-  constructor(private readonly waterMeterService: WaterMeterService) {
-  }
+  constructor(
+    private readonly waterMeterService: WaterMeterService,
+    private readonly router: Router,
+    private readonly stateService: StateService
+  ) {}
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -60,8 +64,8 @@ export class MapComponent implements AfterViewInit {
     if (this.map) {
       const polygonPath = zone.preparePolygon(this.map);
 
-      polygonPath.addListener('click', (event: any) => {
-        console.log('ZONE ID', zone.id);
+      polygonPath.addListener('click', (poly: google.maps.Polygon) => {
+        console.log('POLYGON CLICKED', poly);
         this.setActiveZone(zone);
       });
     }
@@ -70,7 +74,10 @@ export class MapComponent implements AfterViewInit {
   initHydroPoints(hydroPoint: HydroPoint) {
     if (this.map && hydroPoint.type === 'water_tank') {
       const marker = new google.maps.Marker({
-        position: new google.maps.LatLng(hydroPoint.point.lat, hydroPoint.point.lng),
+        position: new google.maps.LatLng(
+          hydroPoint.point.lat,
+          hydroPoint.point.lng
+        ),
         map: this.map,
       });
       marker.addListener('click', () => {
@@ -89,20 +96,21 @@ export class MapComponent implements AfterViewInit {
       });
     });
     zone.setPolygonColor(PolygonColor.Yellow);
+    this.router.navigate(['zone']);
   }
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
     // waterMeter
-    const {latitude: lat, longitude: lng} = waterMeter.point;
+    const { latitude: lat, longitude: lng } = waterMeter.point;
     new google.maps.Circle({
-      strokeColor: '#FF0000',
+      strokeColor: PolygonColor.Green,
       strokeOpacity: 1,
       strokeWeight: 1,
-      fillColor: '#FF0000',
+      fillColor: PolygonColor.Green,
       fillOpacity: 1,
       map: this.map,
-      center: {lat, lng},
-      radius: 1,
+      center: { lat, lng },
+      radius: 2,
     });
   }
 }
