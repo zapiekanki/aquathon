@@ -8,6 +8,7 @@ import {
 import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
 import { HydroPoint } from "../../../models/hydro-point.model";
+import MapsEventListener = google.maps.MapsEventListener;
 
 @Component({
   selector: 'app-map',
@@ -53,13 +54,12 @@ export class MapComponent implements AfterViewInit {
     if (this.map) {
       const infoWindow = new google.maps.InfoWindow();
       const polygonPath = zone.preparePolygon(this.map);
-      google.maps.event.addListener(polygonPath, 'click', (event: any) => {
+
+      polygonPath.addListener('click', (event: any) => {
+        console.log('POLYGON CLICKED evt', event);
         infoWindow.setContent(zone.id);
         infoWindow.setPosition(event.latLng);
         infoWindow.open(this.map);
-      });
-      polygonPath.addListener('click', (poly: google.maps.Polygon) => {
-        console.log('POLYGON CLICKED', poly)
         this.setActiveZone(zone);
       });
     }
