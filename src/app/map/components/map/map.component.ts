@@ -31,7 +31,6 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  activeZone: Zone | undefined;
   waterMeters: WaterMeter[] = [];
 
   @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
@@ -87,8 +86,9 @@ export class MapComponent implements AfterViewInit {
   }
 
   setActiveZone(zone: Zone) {
-    this.activeZone?.setPolygonColor(PolygonColor.LightBlue);
-    this.activeZone = zone;
+    const activeZone = this.stateService.getActiveZone();
+    activeZone?.setPolygonColor(PolygonColor.LightBlue);
+    this.stateService.setActiveZone(zone);
     this.waterMeterService.getWaterMetersByZone(zone).then((waterMeters) => {
       this.waterMeters = waterMeters;
       waterMeters.forEach((waterMeter) => {
