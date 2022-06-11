@@ -3,6 +3,7 @@ import { GeoPoint } from 'firebase/firestore';
 import { HydroPoint } from './hydro-point.model';
 import { MapPoint } from '../map/models/map-point.model';
 import { PolygonColor } from '../map/polygon.enum';
+import { Water } from './water-meter.model';
 
 export class Zone {
   id = '';
@@ -12,6 +13,7 @@ export class Zone {
   waterAvailable = false;
   name = '';
   polygon: google.maps.Polygon | undefined;
+  water: Water = {};
 
   static fromDocumentData(id: string, data: DocumentData) {
     const model = new Zone();
@@ -23,6 +25,7 @@ export class Zone {
     model.waterAvailable = data['waterAvailable'];
     model.name = data['name'];
     model.hydroPointRefs = data['hydroPointRefs'];
+    model.water = data['water'];
     return model;
   }
 

@@ -2,15 +2,23 @@ import { Injectable } from '@angular/core';
 import { Zone } from '../models/zone.model';
 import { Subject } from 'rxjs';
 import { HydroPoint } from "../models/hydro-point.model";
+import { BehaviorSubject } from 'rxjs';
+import { WaterMeter } from '../models/water-meter.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StateService {
-  private activeZoneSubject = new Subject<Zone>();
+  private activeZoneSubject = new BehaviorSubject(new Zone());
+  private activeZone!: Zone;
   activeZone$ = this.activeZoneSubject.asObservable();
 
-  private activeZone!: Zone;
+  private selectedWaterMeterSubject = new BehaviorSubject(new WaterMeter());
+  selectedWaterMeter$ = this.selectedWaterMeterSubject.asObservable();
+
+  selectWaterMeter(waterMeter: WaterMeter) {
+    this.selectedWaterMeterSubject.next(waterMeter);
+  }
 
   private activeHydroPointSubject = new Subject<HydroPoint>();
   activeHydroPoint$ = this.activeHydroPointSubject.asObservable();

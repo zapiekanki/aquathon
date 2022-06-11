@@ -18,6 +18,7 @@ export class AppComponent {
   zones$;
   sensors$;
   isZoneVisible = false;
+  isWaterMeterSelected = false;
   isHydroPointVisible = false;
 
   constructor(
@@ -41,6 +42,10 @@ export class AppComponent {
 
     this.stateService.activeZone$.subscribe((zone) => {
       this.isZoneVisible = !!zone.id;
+    });
+
+    this.stateService.selectedWaterMeter$.subscribe((waterMeter) => {
+      this.isWaterMeterSelected = !!waterMeter.zoneRef;
     });
 
     this.stateService.activeHydroPoint$.subscribe((hydroPoint) => {

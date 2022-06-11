@@ -16,8 +16,7 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MapModule } from './map/map.module';
 import { ZoneModule } from './views/zone/zone.module';
 import { HydroPointModule } from "./views/hydro-point/hydro-point.module";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
+import { WaterMeterModule } from './views/water-meter/water-meter.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,11 +36,9 @@ import { MatInputModule } from "@angular/material/input";
     HttpClientJsonpModule,
     MapModule,
     ZoneModule,
-    HydroPointModule,
-    MatFormFieldModule,
-    MatInputModule
+    WaterMeterModule,
+    HydroPointModule
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

@@ -122,7 +122,7 @@ export class MapComponent implements AfterViewInit {
       radius: 2,
     });
     circle.addListener('click', () => {
-      console.log('waterMeter CLICKED', waterMeter);
+      this.stateService.selectWaterMeter(waterMeter);
     });
   }
 }
