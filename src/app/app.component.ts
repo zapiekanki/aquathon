@@ -31,5 +31,6 @@ export class AppComponent {
     this.sensors$ = this.sensorService.sensors$;
 
     this.sensors$.subscribe((res) => console.log(res));
+    this.zones$.subscribe((res) => console.log('ZONES', res));
   }
 }
