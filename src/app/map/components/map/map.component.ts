@@ -68,7 +68,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   initHydroPoints(hydroPoint: HydroPoint) {
-    if (this.map) {
+    if (this.map && hydroPoint.type === 'water_tank') {
       const marker = new google.maps.Marker({
         position: new google.maps.LatLng(hydroPoint.point.lat, hydroPoint.point.lng),
         map: this.map,
