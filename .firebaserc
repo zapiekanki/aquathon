@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "aquathon"
+  },
+  "targets": {
+    "aquathon": {
+      "hosting": {
+        "aquathon": [
+          "aquathon"
+        ]
+      }
+    }
   }
 }

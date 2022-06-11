@@ -94,6 +94,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "aquathon:build:production",
+            "firebaseProject": "aquathon",
+            "firebaseHostingSite": "aquathon"
+          }
         }
       }
     }
