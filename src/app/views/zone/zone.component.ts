@@ -8,7 +8,6 @@ import { ZoneService } from '../../services/zone.service';
 @Component({
   selector: 'app-zone',
   templateUrl: './zone.component.html',
-  styleUrls: ['./zone.component.css'],
 })
 export class ZoneComponent implements OnInit {
   activeZone$: Observable<Zone> = EMPTY;
@@ -20,7 +19,8 @@ export class ZoneComponent implements OnInit {
     private readonly stateService: StateService,
     private readonly zoneService: ZoneService,
     private readonly cd: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.activeZone$ = this.stateService.activeZone$;

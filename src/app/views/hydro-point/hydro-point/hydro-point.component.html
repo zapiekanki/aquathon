@@ -1,0 +1,44 @@
+<ng-container *ngIf="formGroup && activeHydroPoint">
+  <h2>
+    Hydropoint {{activeHydroPoint.name}}
+  </h2>
+  <hr>
+
+  <form
+    [formGroup]="formGroup">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Area</mat-label>
+      <input
+        matInput
+        placeholder="Hydropoint area"
+        formControlName="area"
+        [readonly]>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Water flow</mat-label>
+      <input
+        matInput
+        placeholder="Hydropoint water flow"
+        formControlName="waterFlow"
+        readonly>
+    </mat-form-field>
+
+    <div>
+      <mat-label>Is water available?</mat-label>
+      <mat-slide-toggle
+        formControlName="waterAvailable"
+      ></mat-slide-toggle>
+    </div>
+
+    <div>
+      <mat-label>Is water locked?</mat-label>
+      <mat-slide-toggle
+        formControlName="waterLocked"
+        (change)="toggleWaterLock($event)"></mat-slide-toggle>
+    </div>
+  </form>
+  <hr>
+</ng-container>
+

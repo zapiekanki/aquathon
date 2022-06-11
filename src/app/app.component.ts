@@ -18,6 +18,7 @@ export class AppComponent {
   zones$;
   sensors$;
   isZoneVisible = false;
+  isHydroPointVisible = false;
 
   constructor(
     private readonly hydroPointsService: HydroPointService,
@@ -40,6 +41,10 @@ export class AppComponent {
 
     this.stateService.activeZone$.subscribe((zone) => {
       this.isZoneVisible = !!zone.id;
+    });
+
+    this.stateService.activeHydroPoint$.subscribe((hydroPoint) => {
+      this.isHydroPointVisible = !!hydroPoint.name;
     });
   }
 }
