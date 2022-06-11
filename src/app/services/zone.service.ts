@@ -1,26 +1,24 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, map, Observable } from 'rxjs';
 import { collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { WaterMeter } from '../models/water-meter.model';
 import { DocumentData } from 'firebase/firestore';
+import { Zone } from '../models/zone.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class WaterMeterService {
-  waterMeters$: Observable<WaterMeter[]> = EMPTY;
+export class ZoneService {
+  zones$: Observable<Zone[]> = EMPTY;
 
   constructor(private readonly firestore: Firestore) {
     this.initWaterMetersSubscription();
   }
 
   private initWaterMetersSubscription() {
-    const waterMetersCollection = collection(this.firestore, 'water-meter');
-    this.waterMeters$ = collectionData<DocumentData>(
-      waterMetersCollection
-    ).pipe(
+    const zonesCollection = collection(this.firestore, 'zone');
+    this.zones$ = collectionData<DocumentData>(zonesCollection).pipe(
       map((documentData) =>
-        documentData.map((data) => WaterMeter.fromDocumentData(data))
+        documentData.map((data) => Zone.fromDocumentData(data))
       )
     );
   }
