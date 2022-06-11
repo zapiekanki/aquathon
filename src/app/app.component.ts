@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HydroPointService } from './services/hydro-point.service';
 import { ValveService } from './services/valve.service';
 
