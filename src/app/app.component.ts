@@ -30,6 +30,9 @@ export class AppComponent {
     this.zones$ = this.zoneService.zones$;
     this.sensors$ = this.sensorService.sensors$;
 
-    this.zones$.subscribe((res) => console.log('ZONES', res));
+    // this.zones$.subscribe((res) => {
+    //   console.log(res);
+    //   this.waterMeterService.getWaterMeterByZone(res[0]);
+    // });
   }
 }

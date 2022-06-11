@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
+import { WaterMeterService } from '../../../services/water-meter.service';
+import { WaterMeter } from '../../../models/water-meter.model';
 
 @Component({
   selector: 'app-map',
@@ -21,6 +23,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   activeZone: Zone | undefined;
+  waterMeters: WaterMeter[] = [];
 
   @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
   map?: google.maps.Map | null;
@@ -33,6 +36,8 @@ export class MapComponent implements AfterViewInit {
     center: this.coordinates,
     zoom: 12,
   };
+
+  constructor(private readonly waterMeterService: WaterMeterService) {}
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -54,6 +59,27 @@ export class MapComponent implements AfterViewInit {
   setActiveZone(zone: Zone) {
     this.activeZone?.setPolygonColor(PolygonColor.LightBlue);
     this.activeZone = zone;
+    this.waterMeterService.getWaterMetersByZone(zone).then((waterMeters) => {
+      this.waterMeters = waterMeters;
+      waterMeters.forEach((waterMeter) => {
+        this.addWaterMeterMarker(waterMeter);
+      });
+    });
     zone.setPolygonColor(PolygonColor.Yellow);
+  }
+
+  addWaterMeterMarker(waterMeter: WaterMeter) {
+    // waterMeter
+    const { latitude: lat, longitude: lng } = waterMeter.point;
+    new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 1,
+      strokeWeight: 1,
+      fillColor: '#FF0000',
+      fillOpacity: 1,
+      map: this.map,
+      center: { lat, lng },
+      radius: 1,
+    });
   }
 }
