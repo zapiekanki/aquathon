@@ -11,6 +11,7 @@ import { WaterMeterService } from '../../../services/water-meter.service';
 import { WaterMeter } from '../../../models/water-meter.model';
 import { HydroPoint } from '../../../models/hydro-point.model';
 import { StateService } from '../../../services/state.service';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -51,6 +52,7 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.mapInitializer();
+    this.initZoneChangeSubscription();
   }
 
   mapInitializer() {
@@ -87,13 +89,23 @@ export class MapComponent implements AfterViewInit {
     const activeZone = this.stateService.getActiveZone();
     activeZone?.setPolygonColor(PolygonColor.LightBlue);
     this.stateService.setActiveZone(zone);
-    this.waterMeterService.getWaterMetersByZone(zone).then((waterMeters) => {
-      this.waterMeters = waterMeters;
-      waterMeters.forEach((waterMeter) => {
-        this.addWaterMeterMarker(waterMeter);
-      });
-    });
     zone.setPolygonColor(PolygonColor.Yellow);
+  }
+
+  initZoneChangeSubscription() {
+    this.stateService.activeZone$
+      .pipe(distinctUntilChanged())
+      .subscribe((zone) => {
+        console.log('this.waterMeterService.getWaterMetersByZone');
+        this.waterMeterService
+          .getWaterMetersByZone(zone)
+          .then((waterMeters) => {
+            this.waterMeters = waterMeters;
+            waterMeters.forEach((waterMeter) => {
+              this.addWaterMeterMarker(waterMeter);
+            });
+          });
+      });
   }
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
