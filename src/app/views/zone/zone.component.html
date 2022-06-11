@@ -5,22 +5,7 @@
 <div>
   <mat-label>Water Available:</mat-label>
   <br>
-  <mat-slide-toggle [checked]="activeZone?.waterAvailable"></mat-slide-toggle>
+  <mat-slide-toggle [ngModel]="waterAvailable" (ngModelChange)="onWaterAvailableChange($event)"></mat-slide-toggle>
 </div>
-
 <hr>
 
-
-<!--<form [formGroup]="formGroup">-->
-<!--  <mat-form-field appearance="outline">-->
-<!--    <mat-label for="waterAvailable">-->
-<!--      Test-->
-<!--    </mat-label>-->
-<!--    <mat-checkbox-->
-<!--      name="waterAvailable"-->
-
-<!--      class="form-control"-->
-<!--      formControlName="waterAvailable"-->
-<!--    ></mat-checkbox>-->
-<!--  </mat-form-field>-->
-<!--</form>-->

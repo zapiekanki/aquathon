@@ -3,7 +3,10 @@ import { EMPTY, map, Observable } from 'rxjs';
 import {
   collection,
   collectionSnapshots,
+  doc,
   Firestore,
+  getDoc,
+  setDoc,
 } from '@angular/fire/firestore';
 import { DocumentData } from 'firebase/firestore';
 import { Zone } from '../models/zone.model';
@@ -29,5 +32,17 @@ export class ZoneService {
         )
       )
     );
+  }
+
+  async updateZone(zoneId: string, propertyName: keyof Zone, value: any) {
+    getDoc(doc(this.firestore, `zone/${zoneId}`)).then((document) => {
+      const data = document.data();
+      const ref = document.ref;
+
+      return setDoc(doc(this.firestore, `zone/${zoneId}`), {
+        ...data,
+        [propertyName]: value,
+      });
+    });
   }
 }
