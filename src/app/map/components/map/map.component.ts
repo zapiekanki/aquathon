@@ -9,7 +9,6 @@ import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
 import { WaterMeter } from '../../../models/water-meter.model';
-import MapsEventListener = google.maps.MapsEventListener;
 import { HydroPoint } from '../../../models/hydro-point.model';
 import { Router } from '@angular/router';
 import { StateService } from '../../../services/state.service';
@@ -64,11 +63,7 @@ export class MapComponent implements AfterViewInit {
   initPolygonFromZone(zone: Zone) {
     if (this.map) {
       const polygonPath = zone.preparePolygon(this.map);
-      google.maps.event.addListener(polygonPath, 'click', (event: any) => {
-        infoWindow.setContent(zone.id);
-        infoWindow.setPosition(event.latLng);
-        infoWindow.open(this.map);
-      });
+
       polygonPath.addListener('click', (poly: google.maps.Polygon) => {
         console.log('POLYGON CLICKED', poly);
         this.setActiveZone(zone);
