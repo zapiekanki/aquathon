@@ -18,8 +18,7 @@
       #drawer
       mode="side"
       opened>
-
-      <app-zone></app-zone>
+      <app-zone *ngIf="isZoneVisible"></app-zone>
     </mat-drawer>
     <mat-drawer-content>
       <app-map

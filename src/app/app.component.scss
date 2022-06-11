@@ -3,8 +3,6 @@
   height: 100vh;
 
   &__header {
-    padding: 10px;
-
     &__title {
       margin-left: 15px;
       font-size: 1.5em;
@@ -14,11 +12,10 @@
   }
 
   &__content {
-
     &__drawer {
+      padding: 5px;
       width: 250px;
       height: 100%;
-      background-color: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
   }

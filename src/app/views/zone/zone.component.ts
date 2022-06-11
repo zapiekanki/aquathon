@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Zone } from '../../models/zone.model';
 import { StateService } from '../../services/state.service';
-import { EMPTY, Observable, take } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { EMPTY, Observable } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-zone',
@@ -16,20 +16,14 @@ export class ZoneComponent implements OnInit {
 
   constructor(
     private readonly stateService: StateService,
-    private fb: FormBuilder
+    private readonly cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.activeZone$ = this.stateService.activeZone$;
-    this.activeZone$
-      .pipe(take(1))
-      .subscribe((zone) => (this.activeZone = zone));
-    this.initForm();
-  }
-
-  initForm() {
-    this.formGroup = this.fb.group({
-      waterAvailable: [this.activeZone.waterAvailable],
+    this.activeZone$.pipe().subscribe((zone) => {
+      this.activeZone = zone;
+      this.cd.detectChanges();
     });
   }
 }

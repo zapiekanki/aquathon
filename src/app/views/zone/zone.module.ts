@@ -4,6 +4,7 @@ import { ZoneComponent } from './zone.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [ZoneComponent],
@@ -13,6 +14,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
   ],
   exports: [ZoneComponent],
 })

@@ -1,6 +1,15 @@
-{{ (activeZone$ | async)?.name }}
-<mat-label>Water Available</mat-label>
-<mat-checkbox [checked]="(activeZone$ | async)?.waterAvailable"></mat-checkbox>
+<h2>
+  {{ activeZone?.name }}
+</h2>
+<hr>
+<div>
+  <mat-label>Water Available:</mat-label>
+  <br>
+  <mat-slide-toggle [checked]="activeZone?.waterAvailable"></mat-slide-toggle>
+</div>
+
+<hr>
+
 
 <!--<form [formGroup]="formGroup">-->
 <!--  <mat-form-field appearance="outline">-->

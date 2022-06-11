@@ -4,6 +4,7 @@ import { ValveService } from './services/valve.service';
 import { WaterMeterService } from './services/water-meter.service';
 import { ZoneService } from './services/zone.service';
 import { SensorService } from './services/sensor.service';
+import { StateService } from './services/state.service';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +17,15 @@ export class AppComponent {
   waterMeters$;
   zones$;
   sensors$;
+  isZoneVisible = false;
 
   constructor(
     private readonly hydroPointsService: HydroPointService,
     private readonly valveService: ValveService,
     private readonly waterMeterService: WaterMeterService,
     private readonly zoneService: ZoneService,
-    private readonly sensorService: SensorService
+    private readonly sensorService: SensorService,
+    private readonly stateService: StateService
   ) {
     this.valves$ = this.valveService.valves$;
     this.hydroPoints$ = this.hydroPointsService.hydroPoints$;
@@ -34,5 +37,9 @@ export class AppComponent {
     //   console.log(res);
     //   this.waterMeterService.getWaterMeterByZone(res[0]);
     // });
+
+    this.stateService.activeZone$.subscribe((zone) => {
+      this.isZoneVisible = !!zone.id;
+    });
   }
 }
