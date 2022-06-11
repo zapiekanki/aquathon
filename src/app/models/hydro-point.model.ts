@@ -1,14 +1,14 @@
-import { DocumentData } from '@angular/fire/compat/firestore';
-import { MapPoint } from "./map-point.model";
-
-type DependentPoint = any;
+import { DocumentData, Reference } from '@angular/fire/compat/firestore';
+import { MapPoint } from './map-point.model';
+import { Water } from './water-meter.model';
 
 export class HydroPoint {
   description = '';
-  dependentPoints: DependentPoint[] = [];
+  dependentPoints: Reference<any>[] = [];
   name = '';
   point = new MapPoint(0, 0);
   type = '';
+  water: Water = {};
 
   static fromDocumentData(data: DocumentData) {
     const model = new HydroPoint();
@@ -16,8 +16,8 @@ export class HydroPoint {
     model.name = data['name'];
     model.type = data['type'];
     model.description = data['description'];
-    model.dependentPoints = ['hereWillBeDependentPoint'];
-
+    model.dependentPoints = data['dependentPoints'];
+    model.water = data['water'];
     return model;
   }
 }
