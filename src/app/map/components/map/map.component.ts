@@ -64,7 +64,7 @@ export class MapComponent implements AfterViewInit {
       const polygonPath = zone.preparePolygon(this.map);
 
       polygonPath.addListener('click', (poly: google.maps.Polygon) => {
-        console.log('POLYGON CLICKED', poly);
+        console.log('ZONE ID', zone.id);
         this.setActiveZone(zone);
       });
     }
