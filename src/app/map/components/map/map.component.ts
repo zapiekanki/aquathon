@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
+import { HydroPoint } from "../../../models/hydro-point.model";
 
 @Component({
   selector: 'app-map',
@@ -20,9 +21,15 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
+  @Input() set hydroPoints(points: HydroPoint[] | null) {
+    if (points) {
+      points.forEach((point) => this.initHydroPoints(point));
+    }
+  }
+
   activeZone: Zone | undefined;
 
-  @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
+  @ViewChild('mapContainer', {static: false}) gmap?: ElementRef;
   map?: google.maps.Map | null;
   lat = 50.041187;
   lng = 21.999121;
@@ -44,9 +51,28 @@ export class MapComponent implements AfterViewInit {
 
   initPolygonFromZone(zone: Zone) {
     if (this.map) {
+      const infoWindow = new google.maps.InfoWindow();
       const polygonPath = zone.preparePolygon(this.map);
-      polygonPath.addListener('click', () => {
+      google.maps.event.addListener(polygonPath, 'click', (event: any) => {
+        infoWindow.setContent(zone.id);
+        infoWindow.setPosition(event.latLng);
+        infoWindow.open(this.map);
+      });
+      polygonPath.addListener('click', (poly: google.maps.Polygon) => {
+        console.log('POLYGON CLICKED', poly)
         this.setActiveZone(zone);
+      });
+    }
+  }
+
+  initHydroPoints(hydroPoint: HydroPoint) {
+    if (this.map) {
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(hydroPoint.point.lat, hydroPoint.point.lng),
+        map: this.map,
+      });
+      marker.addListener('click', () => {
+        console.log('hydroPoint CLICKED', hydroPoint);
       });
     }
   }

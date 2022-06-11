@@ -19,7 +19,9 @@
       opened>Drawer content
     </mat-drawer>
     <mat-drawer-content>
-      <app-map [zones]="zones$ | async"></app-map>
+      <app-map
+        [zones]="zones$ | async"
+        [hydroPoints]="hydroPoints$ | async"></app-map>
     </mat-drawer-content>
   </mat-drawer-container>
 </div>
