@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { MapPoint } from "../../models/map-point.model";
+import { Zone } from "../../../models/zone.model";
 
 @Component({
   selector: 'app-map',
@@ -6,8 +8,14 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements AfterViewInit {
-  @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
-  map?: google.maps.Map;
+  @Input() set zones(zones: Zone[] | null) {
+    if (zones) {
+      zones.forEach(zone => this.initPolygonFromZone(zone.area));
+    }
+  }
+
+  @ViewChild('mapContainer', {static: false}) gmap?: ElementRef;
+  map?: google.maps.Map | null;
   lat = 50.041187;
   lng = 21.999121;
 
@@ -15,8 +23,11 @@ export class MapComponent implements AfterViewInit {
 
   mapOptions: google.maps.MapOptions = {
     center: this.coordinates,
-    zoom: 12
+    zoom: 12,
   };
+
+  constructor() {
+  }
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -25,5 +36,16 @@ export class MapComponent implements AfterViewInit {
   mapInitializer() {
     this.map = new google.maps.Map(this.gmap?.nativeElement,
       this.mapOptions);
+  }
+
+  initPolygonFromZone(areaPoints: MapPoint[]) {
+    const polygonPath = new google.maps.Polygon({
+      paths: areaPoints,
+      geodesic: true,
+      strokeColor: "#0088FF",
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+    });
+    polygonPath.setMap(this.map as google.maps.Map);
   }
 }

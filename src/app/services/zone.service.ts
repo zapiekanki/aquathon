@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, map, Observable } from 'rxjs';
+import { EMPTY, map, Observable, tap } from 'rxjs';
 import { collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { DocumentData } from 'firebase/firestore';
 import { Zone } from '../models/zone.model';

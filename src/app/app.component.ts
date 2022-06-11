@@ -29,5 +29,7 @@ export class AppComponent {
     this.waterMeters$ = this.waterMeterService.waterMeters$;
     this.zones$ = this.zoneService.zones$;
     this.sensors$ = this.sensorService.sensors$;
+
+    this.zones$.subscribe((res) => console.log('ZONES', res));
   }
 }
