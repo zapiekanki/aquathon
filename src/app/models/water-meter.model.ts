@@ -1,4 +1,4 @@
-import { DocumentData } from 'firebase/firestore';
+import { DocumentData, GeoPoint } from 'firebase/firestore';
 import firebase from 'firebase/compat';
 import { Reference } from '@angular/fire/compat/firestore';
 import Timestamp = firebase.firestore.Timestamp;
@@ -13,6 +13,7 @@ export class WaterMeter {
   createdAt: Timestamp | undefined;
   updatedAt: Timestamp | undefined;
   zoneRef: Reference<any> | undefined;
+  point = new GeoPoint(0, 0);
   water: Water = {};
   value = 0;
 
@@ -23,6 +24,7 @@ export class WaterMeter {
     model.updatedAt = data['updatedAt'];
     model.water = data['water'];
     model.value = data['value'];
+    model.point = data['point'];
     return model;
   }
 }
