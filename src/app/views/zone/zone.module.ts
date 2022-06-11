@@ -14,5 +14,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatFormFieldModule,
     MatCheckboxModule,
   ],
+  exports: [ZoneComponent],
 })
 export class ZoneModule {}

@@ -89,7 +89,12 @@ export class MapComponent implements AfterViewInit {
     const activeZone = this.stateService.getActiveZone();
     activeZone?.setPolygonColor(PolygonColor.LightBlue);
     this.stateService.setActiveZone(zone);
+    this.openZoneFormWindow();
     zone.setPolygonColor(PolygonColor.Yellow);
+  }
+
+  openZoneFormWindow() {
+    new google.maps.InfoWindow();
   }
 
   initZoneChangeSubscription() {

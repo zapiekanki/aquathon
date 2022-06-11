@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MapModule } from './map/map.module';
+import { ZoneModule } from './views/zone/zone.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { MapModule } from './map/map.module';
     HttpClientModule,
     HttpClientJsonpModule,
     MapModule,
+    ZoneModule,
   ],
   bootstrap: [AppComponent],
 })
