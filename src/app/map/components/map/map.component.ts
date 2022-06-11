@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, } from '@angular/core';
 import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
@@ -33,7 +27,7 @@ export class MapComponent implements AfterViewInit {
 
   waterMeters: WaterMeter[] = [];
 
-  @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
+  @ViewChild('mapContainer', {static: false}) gmap?: ElementRef;
   map?: google.maps.Map | null;
   lat = 50.041187;
   lng = 21.999121;
@@ -49,7 +43,8 @@ export class MapComponent implements AfterViewInit {
     private readonly waterMeterService: WaterMeterService,
     private readonly router: Router,
     private readonly stateService: StateService
-  ) {}
+  ) {
+  }
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -71,7 +66,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   initHydroPoints(hydroPoint: HydroPoint) {
-    if (this.map) {
+    if (this.map && hydroPoint.type === 'water_tank') {
       const marker = new google.maps.Marker({
         position: new google.maps.LatLng(
           hydroPoint.point.lat,
@@ -101,16 +96,19 @@ export class MapComponent implements AfterViewInit {
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
     // waterMeter
-    const { latitude: lat, longitude: lng } = waterMeter.point;
-    new google.maps.Circle({
+    const {latitude: lat, longitude: lng} = waterMeter.point;
+    const circle = new google.maps.Circle({
       strokeColor: PolygonColor.Green,
       strokeOpacity: 1,
       strokeWeight: 1,
       fillColor: PolygonColor.Green,
       fillOpacity: 1,
       map: this.map,
-      center: { lat, lng },
+      center: {lat, lng},
       radius: 2,
     });
+    circle.addListener('click', () => {
+      console.log('waterMeter CLICKED', waterMeter);
+    })
   }
 }
