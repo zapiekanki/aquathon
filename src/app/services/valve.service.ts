@@ -21,6 +21,5 @@ export class ValveService {
         documentData.map((data) => Valve.fromDocumentData(data))
       )
     );
-    this.valves$.subscribe((res) => console.table(res));
   }
 }

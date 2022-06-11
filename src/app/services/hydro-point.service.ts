@@ -24,6 +24,5 @@ export class HydroPointService {
         documentData.map((data) => HydroPoint.fromDocumentData(data))
       )
     );
-    this.hydroPoints$.subscribe((res) => console.table(res));
   }
 }

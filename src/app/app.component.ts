@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { HydroPointService } from './services/hydro-point.service';
 import { ValveService } from './services/valve.service';
+import { WaterMeterService } from './services/water-meter.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,15 @@ import { ValveService } from './services/valve.service';
 export class AppComponent {
   hydroPoints$;
   valves$;
+  waterMeters$;
 
   constructor(
     private readonly hydroPointsService: HydroPointService,
-    private readonly valveService: ValveService
+    private readonly valveService: ValveService,
+    private readonly waterMeterService: WaterMeterService
   ) {
     this.valves$ = this.valveService.valves$;
     this.hydroPoints$ = this.hydroPointsService.hydroPoints$;
+    this.waterMeters$ = this.waterMeterService.waterMeters$;
   }
 }
