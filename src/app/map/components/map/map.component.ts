@@ -45,7 +45,8 @@ export class MapComponent implements AfterViewInit {
     zoom: 12,
   };
 
-  constructor(private readonly waterMeterService: WaterMeterService) {}
+  constructor(private readonly waterMeterService: WaterMeterService) {
+  }
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -57,14 +58,10 @@ export class MapComponent implements AfterViewInit {
 
   initPolygonFromZone(zone: Zone) {
     if (this.map) {
-      const infoWindow = new google.maps.InfoWindow();
       const polygonPath = zone.preparePolygon(this.map);
 
       polygonPath.addListener('click', (event: any) => {
-        console.log('POLYGON CLICKED evt', event);
-        infoWindow.setContent(zone.id);
-        infoWindow.setPosition(event.latLng);
-        infoWindow.open(this.map);
+        console.log('ZONE ID', zone.id);
         this.setActiveZone(zone);
       });
     }
@@ -96,7 +93,7 @@ export class MapComponent implements AfterViewInit {
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
     // waterMeter
-    const { latitude: lat, longitude: lng } = waterMeter.point;
+    const {latitude: lat, longitude: lng} = waterMeter.point;
     new google.maps.Circle({
       strokeColor: '#FF0000',
       strokeOpacity: 1,
@@ -104,7 +101,7 @@ export class MapComponent implements AfterViewInit {
       fillColor: '#FF0000',
       fillOpacity: 1,
       map: this.map,
-      center: { lat, lng },
+      center: {lat, lng},
       radius: 1,
     });
   }
