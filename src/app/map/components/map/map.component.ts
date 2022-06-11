@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
@@ -27,7 +33,7 @@ export class MapComponent implements AfterViewInit {
 
   waterMeters: WaterMeter[] = [];
 
-  @ViewChild('mapContainer', {static: false}) gmap?: ElementRef;
+  @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
   map?: google.maps.Map | null;
   lat = 50.041187;
   lng = 21.999121;
@@ -43,8 +49,7 @@ export class MapComponent implements AfterViewInit {
     private readonly waterMeterService: WaterMeterService,
     private readonly router: Router,
     private readonly stateService: StateService
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -91,12 +96,11 @@ export class MapComponent implements AfterViewInit {
       });
     });
     zone.setPolygonColor(PolygonColor.Yellow);
-    this.router.navigate(['zone']);
   }
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
     // waterMeter
-    const {latitude: lat, longitude: lng} = waterMeter.point;
+    const { latitude: lat, longitude: lng } = waterMeter.point;
     const circle = new google.maps.Circle({
       strokeColor: PolygonColor.Green,
       strokeOpacity: 1,
@@ -104,11 +108,11 @@ export class MapComponent implements AfterViewInit {
       fillColor: PolygonColor.Green,
       fillOpacity: 1,
       map: this.map,
-      center: {lat, lng},
+      center: { lat, lng },
       radius: 2,
     });
     circle.addListener('click', () => {
       console.log('waterMeter CLICKED', waterMeter);
-    })
+    });
   }
 }

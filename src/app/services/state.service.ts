@@ -9,7 +9,7 @@ export class StateService {
   private activeZoneSubject = new Subject<Zone>();
   activeZone$ = this.activeZoneSubject.asObservable();
 
-  private activeZone: Zone | undefined;
+  private activeZone!: Zone;
 
   setActiveZone(zone: Zone) {
     this.activeZone = zone;
@@ -17,6 +17,6 @@ export class StateService {
   }
 
   getActiveZone(): Zone {
-    return new Zone();
+    return this.activeZone;
   }
 }

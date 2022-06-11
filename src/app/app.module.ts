@@ -14,8 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MapModule } from './map/map.module';
-import { RouterModule } from '@angular/router';
-import { routes } from './app.routing';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +32,6 @@ import { routes } from './app.routing';
     HttpClientModule,
     HttpClientJsonpModule,
     MapModule,
-    RouterModule.forRoot(routes),
   ],
   bootstrap: [AppComponent],
 })
