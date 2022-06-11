@@ -5,6 +5,7 @@ import { MapPoint } from '../map/models/map-point.model';
 import { PolygonColor } from '../map/polygon.enum';
 
 export class Zone {
+  id = '';
   area: MapPoint[] = [];
   description = '';
   hydroPointRefs: Reference<HydroPoint>[] = [];
@@ -12,8 +13,9 @@ export class Zone {
   name = '';
   polygon: google.maps.Polygon | undefined;
 
-  static fromDocumentData(data: DocumentData) {
+  static fromDocumentData(id: string, data: DocumentData) {
     const model = new Zone();
+    model.id = id;
     model.area = data['area'].map((el: GeoPoint) =>
       this.mapGeoPointToMapPoint(el)
     );

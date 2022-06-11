@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, map, Observable, tap } from 'rxjs';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { EMPTY, map, Observable } from 'rxjs';
+import {
+  collection,
+  collectionSnapshots,
+  Firestore,
+} from '@angular/fire/firestore';
 import { DocumentData } from 'firebase/firestore';
 import { Zone } from '../models/zone.model';
 
@@ -16,9 +20,13 @@ export class ZoneService {
 
   private initWaterMetersSubscription() {
     const zonesCollection = collection(this.firestore, 'zone');
-    this.zones$ = collectionData<DocumentData>(zonesCollection).pipe(
+
+    this.zones$ = collectionSnapshots<DocumentData>(zonesCollection).pipe(
+      // tap((doc) => console.log(doc)),
       map((documentData) =>
-        documentData.map((data) => Zone.fromDocumentData(data))
+        documentData.map((snapshot) =>
+          Zone.fromDocumentData(snapshot.id, snapshot.data())
+        )
       )
     );
   }
