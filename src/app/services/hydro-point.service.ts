@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { EMPTY, map, Observable } from 'rxjs';
+import { EMPTY, map, Observable, tap } from 'rxjs';
 import { HydroPoint } from '../models/hydro-point.model';
 import firebase from 'firebase/compat';
 import DocumentData = firebase.firestore.DocumentData;
@@ -22,7 +22,8 @@ export class HydroPointService {
     ).pipe(
       map((documentData) =>
         documentData.map((data) => HydroPoint.fromDocumentData(data))
-      )
+      ),
+      tap((hydroPoints) => console.log('hydroPoints', hydroPoints))
     );
   }
 }
