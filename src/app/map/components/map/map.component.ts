@@ -10,7 +10,6 @@ import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
 import { WaterMeter } from '../../../models/water-meter.model';
 import { HydroPoint } from '../../../models/hydro-point.model';
-import { Router } from '@angular/router';
 import { StateService } from '../../../services/state.service';
 
 @Component({
@@ -47,7 +46,6 @@ export class MapComponent implements AfterViewInit {
 
   constructor(
     private readonly waterMeterService: WaterMeterService,
-    private readonly router: Router,
     private readonly stateService: StateService
   ) {}
 
