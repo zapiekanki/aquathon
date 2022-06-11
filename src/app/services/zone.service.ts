@@ -18,10 +18,10 @@ export class ZoneService {
   zones$: Observable<Zone[]> = EMPTY;
 
   constructor(private readonly firestore: Firestore) {
-    this.initWaterMetersSubscription();
+    this.initZoneSubscription();
   }
 
-  private initWaterMetersSubscription() {
+  private initZoneSubscription() {
     const zonesCollection = collection(this.firestore, 'zone');
 
     this.zones$ = collectionSnapshots<DocumentData>(zonesCollection).pipe(
@@ -37,11 +37,24 @@ export class ZoneService {
   async updateZone(zoneId: string, propertyName: keyof Zone, value: any) {
     getDoc(doc(this.firestore, `zone/${zoneId}`)).then((document) => {
       const data = document.data();
-      const ref = document.ref;
 
       return setDoc(doc(this.firestore, `zone/${zoneId}`), {
         ...data,
         [propertyName]: value,
+      });
+    });
+  }
+
+  async updateWaterZone(
+    zoneId: string,
+    propertyName: keyof Zone['water'],
+    value: any
+  ) {
+    getDoc(doc(this.firestore, `zone/${zoneId}`)).then((document) => {
+      const data: any = document.data();
+      data.water[propertyName] = value;
+      return setDoc(doc(this.firestore, `zone/${zoneId}`), {
+        ...data,
       });
     });
   }

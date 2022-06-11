@@ -26,14 +26,14 @@ export class ZoneComponent implements OnInit {
     this.activeZone$ = this.stateService.activeZone$;
     this.activeZone$.pipe().subscribe((zone) => {
       this.activeZone = zone;
-      this.waterAvailable = zone.waterAvailable;
+      this.waterAvailable = !!zone.water.lock;
       this.cd.detectChanges();
     });
   }
 
   onWaterAvailableChange(value: any) {
     this.zoneService
-      .updateZone(this.activeZone.id, 'waterAvailable', value)
+      .updateWaterZone(this.activeZone.id, 'lock', value)
       .then((res) => console.log(res));
   }
 }

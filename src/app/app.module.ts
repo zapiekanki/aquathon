@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MapModule } from './map/map.module';
 import { ZoneModule } from './views/zone/zone.module';
+import { WaterMeterModule } from './views/water-meter/water-meter.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +35,7 @@ import { ZoneModule } from './views/zone/zone.module';
     HttpClientJsonpModule,
     MapModule,
     ZoneModule,
+    WaterMeterModule,
   ],
   bootstrap: [AppComponent],
 })
