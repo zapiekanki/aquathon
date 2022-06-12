@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { collection, collectionSnapshots, doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { collection, collectionSnapshots, doc, Firestore, getDoc, query, setDoc, where } from '@angular/fire/firestore';
 import { EMPTY, map, Observable } from 'rxjs';
 import { HydroPoint } from '../models/hydro-point.model';
 import firebase from 'firebase/compat';
+import { Sensor } from "../models/sensor.model";
 import DocumentData = firebase.firestore.DocumentData;
 
 @Injectable({
@@ -35,5 +36,20 @@ export class HydroPointService {
         ...data,
       });
     });
+  }
+
+  getHydroPointSensors(id: string) {
+    const q = query(
+      collection(this.firestore, 'sensor'),
+      where('hydroPointRef', '==', doc(this.firestore, 'hydro-point', `/${id}`))
+    );
+
+    return collectionSnapshots<DocumentData>(
+      q
+    ).pipe(
+      map((documentData) =>
+        documentData.map((snapshot) => Sensor.fromDocumentData(snapshot.id, snapshot.data()))
+      )
+    );
   }
 }

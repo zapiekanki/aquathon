@@ -4,7 +4,7 @@
   </h2>
   <form
     [formGroup]="formGroup">
-    <p><strong>Area:</strong> {{activeHydroPoint.water.lock}} </p>
+    <p><strong>Area:</strong> {{activeHydroPoint.description}} </p>
     <p><strong>Water flow:</strong> {{activeHydroPoint.water.flow}} </p>
     <p><strong>Is water available:</strong></p>
     <mat-slide-toggle
@@ -15,6 +15,61 @@
     <mat-slide-toggle
       formControlName="waterLocked"
       (change)="toggleWaterLock($event)"></mat-slide-toggle>
+    <ng-container *ngFor="let sensor of sensor$ | async">
+      <ng-container *ngIf="sensor">
+        <p class="mt-20"><strong>{{sensor.name}}:</strong></p>
+        <div class="pl-10">
+          <p [ngStyle]="{'color': sensor.waterInfo?.ammonium! > 5 ? 'red' : '' }"><strong>amon:</strong>
+            {{sensor.waterInfo.ammonium}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.bromide! > 5 ? 'red' : '' }">
+            <strong>bromek:</strong> {{sensor.waterInfo.bromide}}  </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.calcium! > 5 ? 'red' : '' }">
+            <strong>wapń:</strong> {{sensor.waterInfo.calcium}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.chloride! > 5 ? 'red' : '' }">
+            <strong>chlorek:</strong> {{sensor.waterInfo.chloride}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.chlorophyll! > 5 ? 'red' : '' }">
+            <strong>chlorofil:</strong> {{sensor.waterInfo.chlorophyll}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.coliformCounts! > 5 ? 'red' : '' }"><strong>liczba bakterii z grupy
+            coli:</strong> {{sensor.waterInfo.coliformCounts}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.crudeOil! > 5 ? 'red' : '' }"><strong>ropa
+            naftowa:</strong> {{sensor.waterInfo.crudeOil}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.flourescein! > 5 ? 'red' : '' }">
+            <strong>fluoresceina:</strong> {{sensor.waterInfo.flourescein}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.nitrate! > 5 ? 'red' : '' }">
+            <strong>azotan:</strong> {{sensor.waterInfo.nitrate}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.organicMatterCdomFdom! > 5 ? 'red' : '' }"><strong>materia
+            organiczna
+            Cdom/Fdom:</strong> {{sensor.waterInfo.organicMatterCdomFdom}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.pH! > 5 ? 'red' : '' }">
+            <strong>pH:</strong> {{sensor.waterInfo.pH}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.refinedOil! > 5 ? 'red' : '' }"><strong>olej
+            rafinowany:</strong> {{sensor.waterInfo.refinedOil}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.rhodamine! > 5 ? 'red' : '' }">
+            <strong>rodamina:</strong> {{sensor.waterInfo.rhodamine}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.sodium! > 5 ? 'red' : '' }">
+            <strong>sód:</strong> {{sensor.waterInfo.sodium}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.tryptophan! > 5 ? 'red' : '' }">
+            <strong>tryptofan:</strong> {{sensor.waterInfo.tryptophan}} </p>
+
+          <p [ngStyle]="{'color': sensor.waterInfo?.turbidity! > 5 ? 'red' : '' }">
+            <strong>mętność:</strong> {{sensor.waterInfo.turbidity}} </p>
+        </div>
+      </ng-container>
+    </ng-container>
   </form>
   <hr>
 </section>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, map, Observable } from 'rxjs';
 import { Sensor } from '../models/sensor.model';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionSnapshots, Firestore } from '@angular/fire/firestore';
 import { DocumentData } from 'firebase/firestore';
 
 @Injectable({
@@ -16,9 +16,9 @@ export class SensorService {
 
   private initSensorsSubscription() {
     const sensorsCollection = collection(this.firestore, 'sensor');
-    this.sensors$ = collectionData<DocumentData>(sensorsCollection).pipe(
+    this.sensors$ = collectionSnapshots<DocumentData>(sensorsCollection).pipe(
       map((documentData) =>
-        documentData.map((data) => Sensor.fromDocumentData(data))
+        documentData.map((snap) => Sensor.fromDocumentData(snap.id, snap.data()))
       )
     );
   }
