@@ -14,7 +14,6 @@ import { StateService } from './services/state.service';
 export class AppComponent {
   hydroPoints$;
   valves$;
-  waterMeters$;
   zones$;
   sensors$;
   isZoneVisible = false;
@@ -31,14 +30,8 @@ export class AppComponent {
   ) {
     this.valves$ = this.valveService.valves$;
     this.hydroPoints$ = this.hydroPointsService.hydroPoints$;
-    this.waterMeters$ = this.waterMeterService.waterMeters$;
     this.zones$ = this.zoneService.zones$;
     this.sensors$ = this.sensorService.sensors$;
-
-    // this.zones$.subscribe((res) => {
-    //   console.log(res);
-    //   this.waterMeterService.getWaterMeterByZone(res[0]);
-    // });
 
     this.stateService.activeZone$.subscribe((zone) => {
       this.isZoneVisible = !!zone.id;
