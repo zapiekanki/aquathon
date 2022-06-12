@@ -4,6 +4,7 @@ import { HydroPoint } from './hydro-point.model';
 import { MapPoint } from '../map/models/map-point.model';
 import { PolygonColor } from '../map/polygon.enum';
 import { Water } from './water-meter.model';
+import Polygon = google.maps.Polygon;
 
 export class Zone {
   id = '';
@@ -34,6 +35,10 @@ export class Zone {
       lat: geoPoint.latitude,
       lng: geoPoint.longitude,
     };
+  }
+
+  setPolygon(polygon: Polygon) {
+    this.polygon = polygon;
   }
 
   preparePolygon(map: google.maps.Map) {

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild, } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { Zone } from '../../../models/zone.model';
 import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
@@ -6,6 +12,7 @@ import { WaterMeter } from '../../../models/water-meter.model';
 import { HydroPoint } from '../../../models/hydro-point.model';
 import { StateService } from '../../../services/state.service';
 import { distinctUntilChanged } from 'rxjs';
+import Polygon = google.maps.Polygon;
 
 @Component({
   selector: 'app-map',
@@ -13,6 +20,8 @@ import { distinctUntilChanged } from 'rxjs';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit {
+  polygons = new Map<string, Polygon>();
+
   @Input() set zones(zones: Zone[] | null) {
     if (zones) {
       zones.forEach((zone) => this.initPolygonFromZone(zone));
@@ -27,7 +36,7 @@ export class MapComponent implements AfterViewInit {
 
   waterMeters: WaterMeter[] = [];
 
-  @ViewChild('mapContainer', {static: false}) gmap?: ElementRef;
+  @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
   map?: google.maps.Map | null;
   lat = 50.041187;
   lng = 21.999121;
@@ -42,8 +51,7 @@ export class MapComponent implements AfterViewInit {
   constructor(
     private readonly waterMeterService: WaterMeterService,
     private readonly stateService: StateService
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit() {
     this.mapInitializer();
@@ -55,10 +63,15 @@ export class MapComponent implements AfterViewInit {
   }
 
   initPolygonFromZone(zone: Zone) {
-    if (this.map) {
-      const polygonPath = zone.preparePolygon(this.map);
+    if (this.polygons.has(zone.id)) {
+      zone.setPolygon(this.polygons.get(zone.id)!);
+      return;
+    }
 
-      polygonPath.addListener('click', (poly: google.maps.Polygon) => {
+    if (this.map) {
+      const polygon = zone.preparePolygon(this.map);
+      this.polygons.set(zone.id, polygon);
+      polygon.addListener('click', (poly: google.maps.Polygon) => {
         console.log('ZONE ID', zone.id);
         this.setActiveZone(zone);
       });
@@ -110,7 +123,7 @@ export class MapComponent implements AfterViewInit {
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
     // waterMeter
-    const {latitude: lat, longitude: lng} = waterMeter.point;
+    const { latitude: lat, longitude: lng } = waterMeter.point;
     const circle = new google.maps.Circle({
       strokeColor: PolygonColor.Green,
       strokeOpacity: 1,
@@ -118,7 +131,7 @@ export class MapComponent implements AfterViewInit {
       fillColor: PolygonColor.Green,
       fillOpacity: 1,
       map: this.map,
-      center: {lat, lng},
+      center: { lat, lng },
       radius: 2,
     });
     circle.addListener('click', () => {
