@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { doc, Firestore, getDocs, query, where } from '@angular/fire/firestore';
+import {
+  doc,
+  Firestore,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from '@angular/fire/firestore';
 import { WaterMeter } from '../models/water-meter.model';
 import {
   collection,
@@ -41,5 +49,17 @@ export class WaterMeterService {
       docs.push(WaterMeter.fromDocumentData(doc.id, doc.data()));
     });
     return docs;
+  }
+
+  async updateWaterMeterLock(waterMeterId: string, value: boolean) {
+    getDoc(doc(this.firestore, `water-meter/${waterMeterId}`)).then(
+      (document) => {
+        const data: any = document.data();
+        data.water.lock = value;
+        return setDoc(doc(this.firestore, `water-meter/${waterMeterId}`), {
+          ...data,
+        });
+      }
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { StateService } from '../../services/state.service';
 import { WaterMeter } from '../../models/water-meter.model';
+import { WaterMeterService } from '../../services/water-meter.service';
 
 @Component({
   selector: 'app-water-meter',
@@ -14,6 +15,7 @@ export class WaterMeterComponent implements OnInit {
 
   constructor(
     private readonly stateService: StateService,
+    private readonly waterMeterService: WaterMeterService,
     private readonly cd: ChangeDetectorRef
   ) {}
 
@@ -24,5 +26,13 @@ export class WaterMeterComponent implements OnInit {
       this.updatedAt = this.waterMeter.updatedAt?.toDate();
       this.cd.detectChanges();
     });
+  }
+
+  onWaterLockChange(lock: boolean) {
+    this.waterMeter.water.lock = lock;
+    this.waterMeterService
+      .updateWaterMeterLock(this.waterMeter.id!, lock)
+      .then();
+    this.waterMeter.calculateColor();
   }
 }

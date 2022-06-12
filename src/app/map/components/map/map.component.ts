@@ -117,30 +117,30 @@ export class MapComponent implements AfterViewInit {
           .then((waterMeters) => {
             this.waterMeters = waterMeters;
             waterMeters.forEach((waterMeter) => {
-              this.addWaterMeterMarker(waterMeter);
+              this.setWaterMeterMarker(waterMeter);
             });
           });
       });
   }
 
-  addWaterMeterMarker(waterMeter: WaterMeter) {
-    if (this.waterMetersCache.has(waterMeter.id!)) {
-      return;
+  setWaterMeterMarker(waterMeter: WaterMeter) {
+    let circle = this.waterMetersCache.get(waterMeter.id!)!;
+    if (!circle) {
+      const { latitude: lat, longitude: lng } = waterMeter.point;
+      circle = new google.maps.Circle({
+        strokeOpacity: 1,
+        strokeWeight: 1,
+        fillOpacity: 1,
+        map: this.map,
+        center: { lat, lng },
+        radius: 2,
+      });
+      circle.addListener('click', () => {
+        this.stateService.selectWaterMeter(waterMeter);
+      });
+      this.waterMetersCache.set(waterMeter.id!, circle);
     }
-    const { latitude: lat, longitude: lng } = waterMeter.point;
-    const circle = new google.maps.Circle({
-      strokeColor: PolygonColor.Green,
-      strokeOpacity: 1,
-      strokeWeight: 1,
-      fillColor: PolygonColor.Green,
-      fillOpacity: 1,
-      map: this.map,
-      center: { lat, lng },
-      radius: 2,
-    });
-    circle.addListener('click', () => {
-      this.stateService.selectWaterMeter(waterMeter);
-    });
-    this.waterMetersCache.set(waterMeter.id!, circle);
+    waterMeter.assignCircle(circle);
+    waterMeter.calculateColor();
   }
 }
