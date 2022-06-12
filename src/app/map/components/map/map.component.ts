@@ -48,6 +48,7 @@ export class MapComponent implements AfterViewInit {
   mapOptions: google.maps.MapOptions = {
     center: this.coordinates,
     zoom: 12,
+    disableDefaultUI: true,
   };
 
   constructor(
@@ -136,6 +137,7 @@ export class MapComponent implements AfterViewInit {
         radius: 5,
       });
       circle.addListener('click', () => {
+        console.log(waterMeter.id);
         this.stateService.selectWaterMeter(waterMeter);
       });
       this.waterMetersCache.set(waterMeter.id!, circle);
