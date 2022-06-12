@@ -133,7 +133,7 @@ export class MapComponent implements AfterViewInit {
         fillOpacity: 1,
         map: this.map,
         center: { lat, lng },
-        radius: 2,
+        radius: 5,
       });
       circle.addListener('click', () => {
         this.stateService.selectWaterMeter(waterMeter);

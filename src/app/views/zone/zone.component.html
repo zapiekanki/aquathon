@@ -1,11 +1,13 @@
 <h2>
   Zone {{ activeZone?.name }}
 </h2>
-<hr>
 <div>
   <mat-label>Water lock:</mat-label>
   <br>
   <mat-slide-toggle [ngModel]="waterAvailable" (ngModelChange)="onWaterAvailableChange($event)"></mat-slide-toggle>
+  <p><strong>Is water available:</strong> {{activeZone.water.available}} </p>
+  <p><strong>Water flow:</strong> {{activeZone.water.flow}} </p>
+
 </div>
 <hr>
 
