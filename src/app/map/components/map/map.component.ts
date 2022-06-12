@@ -6,7 +6,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Zone } from '../../../models/zone.model';
-import { PolygonColor } from '../../polygon.enum';
 import { WaterMeterService } from '../../../services/water-meter.service';
 import { WaterMeter } from '../../../models/water-meter.model';
 import { HydroPoint } from '../../../models/hydro-point.model';
@@ -66,6 +65,7 @@ export class MapComponent implements AfterViewInit {
   initPolygonFromZone(zone: Zone) {
     if (this.polygonsCache.has(zone.id)) {
       zone.setPolygon(this.polygonsCache.get(zone.id)!);
+      zone.calculateColor();
       return;
     }
 
@@ -77,6 +77,7 @@ export class MapComponent implements AfterViewInit {
         this.setActiveZone(zone);
       });
     }
+    zone.calculateColor();
   }
 
   initHydroPoints(hydroPoint: HydroPoint) {
@@ -92,10 +93,14 @@ export class MapComponent implements AfterViewInit {
 
   setActiveZone(zone: Zone) {
     const activeZone = this.stateService.getActiveZone();
-    activeZone?.setPolygonColor(PolygonColor.LightBlue);
+    if (activeZone) {
+      activeZone.isActive = false;
+      activeZone.calculateColor();
+    }
     this.stateService.setActiveZone(zone);
+    zone.isActive = true;
+    zone.calculateColor();
     this.openZoneFormWindow();
-    zone.setPolygonColor(PolygonColor.Yellow);
   }
 
   setActiveHydroPoint(hydroPoint: HydroPoint) {

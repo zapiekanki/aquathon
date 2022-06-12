@@ -16,6 +16,7 @@ export class Zone {
   polygon: google.maps.Polygon | undefined;
   water: Water = {};
   waterMeters: WaterMeter[] = [];
+  isActive = false;
 
   static fromDocumentData(id: string, data: DocumentData) {
     const model = new Zone();
@@ -59,5 +60,28 @@ export class Zone {
 
   setPolygonColor(color: PolygonColor) {
     this.polygon?.setOptions({ strokeColor: color, fillColor: color });
+  }
+
+  calculateColor() {
+    if (!this.polygon) {
+      return;
+    }
+    if (this.isActive) {
+      this.polygon.setValues({
+        fillColor: PolygonColor.Yellow,
+        strokeColor: PolygonColor.Yellow,
+      });
+    } else {
+      this.polygon.setValues({
+        fillColor: PolygonColor.LightBlue,
+        strokeColor: PolygonColor.LightBlue,
+      });
+    }
+    if (!this.water.available || this.water.lock) {
+      this.polygon.setValues({
+        fillColor: this.isActive ? PolygonColor.Yellow : PolygonColor.Red,
+        strokeColor: PolygonColor.Red,
+      });
+    }
   }
 }
