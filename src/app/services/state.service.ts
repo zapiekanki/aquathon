@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Zone } from '../models/zone.model';
-import { Subject } from 'rxjs';
-import { HydroPoint } from "../models/hydro-point.model";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { HydroPoint } from '../models/hydro-point.model';
 import { WaterMeter } from '../models/water-meter.model';
 
 @Injectable({
@@ -26,6 +25,10 @@ export class StateService {
   private activeHydroPoint!: HydroPoint;
 
   setActiveZone(zone: Zone) {
+    if (this.activeZone) {
+      this.activeZone.isActive = false;
+    }
+    zone.isActive = true;
     this.activeZone = zone;
     this.activeZoneSubject.next(this.activeZone);
   }

@@ -63,9 +63,19 @@ export class Zone {
   }
 
   calculateColor() {
+    let shouldBeRed = !this.water.available || this.water.lock;
     if (!this.polygon) {
       return;
     }
+
+    if (shouldBeRed) {
+      this.polygon.setValues({
+        fillColor: this.isActive ? PolygonColor.Yellow : PolygonColor.Red,
+        strokeColor: PolygonColor.Red,
+      });
+      return;
+    }
+
     if (this.isActive) {
       this.polygon.setValues({
         fillColor: PolygonColor.Yellow,
@@ -75,12 +85,6 @@ export class Zone {
       this.polygon.setValues({
         fillColor: PolygonColor.LightBlue,
         strokeColor: PolygonColor.LightBlue,
-      });
-    }
-    if (!this.water.available || this.water.lock) {
-      this.polygon.setValues({
-        fillColor: this.isActive ? PolygonColor.Yellow : PolygonColor.Red,
-        strokeColor: PolygonColor.Red,
       });
     }
   }

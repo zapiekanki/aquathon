@@ -34,6 +34,7 @@ export class ZoneComponent implements OnInit {
     this.zoneService
       .updateWaterZone(this.activeZone.id, 'lock', value)
       .then((res) => {
+        this.activeZone.water.lock = value;
         this.activeZone.waterMeters.forEach((waterMeter) => {
           waterMeter.water.available = !value;
           waterMeter.calculateColor();
