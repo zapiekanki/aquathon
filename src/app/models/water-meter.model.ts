@@ -20,6 +20,7 @@ export class WaterMeter {
 
   static fromDocumentData(id: string, data: DocumentData) {
     const model = new WaterMeter();
+    model.id = id;
     model.createdAt = data['createdAt'];
     model.zoneRef = data['zoneRef'];
     model.updatedAt = data['updatedAt'];
