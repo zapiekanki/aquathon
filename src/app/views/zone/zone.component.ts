@@ -19,8 +19,7 @@ export class ZoneComponent implements OnInit {
     private readonly stateService: StateService,
     private readonly zoneService: ZoneService,
     private readonly cd: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.activeZone$ = this.stateService.activeZone$;
@@ -34,6 +33,11 @@ export class ZoneComponent implements OnInit {
   onWaterAvailableChange(value: any) {
     this.zoneService
       .updateWaterZone(this.activeZone.id, 'lock', value)
-      .then((res) => console.log(res));
+      .then((res) => {
+        this.activeZone.waterMeters.forEach((waterMeter) => {
+          waterMeter.water.available = !value;
+          waterMeter.calculateColor();
+        });
+      });
   }
 }

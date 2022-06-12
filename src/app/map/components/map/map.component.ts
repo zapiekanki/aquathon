@@ -36,8 +36,6 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  waterMeters: WaterMeter[] = [];
-
   @ViewChild('mapContainer', { static: false }) gmap?: ElementRef;
   map?: google.maps.Map | null;
   lat = 50.041187;
@@ -112,11 +110,13 @@ export class MapComponent implements AfterViewInit {
     this.stateService.activeZone$
       .pipe(distinctUntilChanged())
       .subscribe((zone) => {
-        console.log('this.waterMeterService.getWaterMetersByZone');
+        if (zone.waterMeters.length) {
+          return;
+        }
         this.waterMeterService
           .getWaterMetersByZone(zone)
           .then((waterMeters) => {
-            this.waterMeters = waterMeters;
+            zone.waterMeters = waterMeters;
             waterMeters.forEach((waterMeter) => {
               this.setWaterMeterMarker(waterMeter);
             });
