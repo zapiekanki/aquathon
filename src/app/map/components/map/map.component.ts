@@ -13,6 +13,7 @@ import { HydroPoint } from '../../../models/hydro-point.model';
 import { StateService } from '../../../services/state.service';
 import { distinctUntilChanged } from 'rxjs';
 import Polygon = google.maps.Polygon;
+import Circle = google.maps.Circle;
 
 @Component({
   selector: 'app-map',
@@ -20,7 +21,8 @@ import Polygon = google.maps.Polygon;
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit {
-  polygons = new Map<string, Polygon>();
+  polygonsCache = new Map<string, Polygon>();
+  waterMetersCache = new Map<string, Circle>();
 
   @Input() set zones(zones: Zone[] | null) {
     if (zones) {
@@ -63,14 +65,14 @@ export class MapComponent implements AfterViewInit {
   }
 
   initPolygonFromZone(zone: Zone) {
-    if (this.polygons.has(zone.id)) {
-      zone.setPolygon(this.polygons.get(zone.id)!);
+    if (this.polygonsCache.has(zone.id)) {
+      zone.setPolygon(this.polygonsCache.get(zone.id)!);
       return;
     }
 
     if (this.map) {
       const polygon = zone.preparePolygon(this.map);
-      this.polygons.set(zone.id, polygon);
+      this.polygonsCache.set(zone.id, polygon);
       polygon.addListener('click', (poly: google.maps.Polygon) => {
         console.log('ZONE ID', zone.id);
         this.setActiveZone(zone);
@@ -122,7 +124,9 @@ export class MapComponent implements AfterViewInit {
   }
 
   addWaterMeterMarker(waterMeter: WaterMeter) {
-    // waterMeter
+    if (this.waterMetersCache.has(waterMeter.id!)) {
+      return;
+    }
     const { latitude: lat, longitude: lng } = waterMeter.point;
     const circle = new google.maps.Circle({
       strokeColor: PolygonColor.Green,
@@ -137,5 +141,6 @@ export class MapComponent implements AfterViewInit {
     circle.addListener('click', () => {
       this.stateService.selectWaterMeter(waterMeter);
     });
+    this.waterMetersCache.set(waterMeter.id!, circle);
   }
 }

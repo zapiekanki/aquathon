@@ -10,6 +10,7 @@ export interface Water {
 }
 
 export class WaterMeter {
+  id: string | undefined;
   createdAt: Timestamp | undefined;
   updatedAt: Timestamp | undefined;
   zoneRef: Reference<any> | undefined;
@@ -17,7 +18,7 @@ export class WaterMeter {
   water: Water = {};
   value = 0;
 
-  static fromDocumentData(data: DocumentData) {
+  static fromDocumentData(id: string, data: DocumentData) {
     const model = new WaterMeter();
     model.createdAt = data['createdAt'];
     model.zoneRef = data['zoneRef'];
